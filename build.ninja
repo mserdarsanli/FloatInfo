@@ -1,0 +1,22 @@
+rule download-file
+    command = curl --location $url > $out
+
+rule emscripten-compile
+    command = em++ -O3 $in -o $out -sEXPORTED_FUNCTIONS=_malloc,_get_fe,_free,_e_get_string,_e_get_int,_e_set_value -sEXPORTED_RUNTIME_METHODS=ccall,cwrap,stringToNewUTF8,UTF8ToString -sDEFAULT_LIBRARY_FUNCS_TO_INCLUDE=\$$stringToNewUTF8  -sMODULARIZE=1 -sEXPORT_NAME="createMyModule"
+
+rule process-template
+    command = python3 process_template.py < $in > $out
+
+rule copy
+    command = cp $in $out
+
+build out/site/index.html: process-template tmpl.index.html | process_template.py
+build out/floatinfo.cpp: process-template tmpl.floatinfo.cpp | process_template.py
+build out/SimpleBigInt.cpp: copy SimpleBigInt.cpp
+
+build out/site/floatinfo.js | out/site/floatinfo.wasm: emscripten-compile out/floatinfo.cpp | out/SimpleBigInt.cpp
+
+build out/site/open-props-1.5.15.min.css: download-file
+    url = https://unpkg.com/open-props@1.5.15/open-props.min.css
+
+build out/site/icon.png: copy icon.png
