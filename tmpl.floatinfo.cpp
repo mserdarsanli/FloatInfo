@@ -904,7 +904,16 @@ struct PositEditor : Editor
         case {TMPL_IDENTIFIER_EXPONENT}: return std::to_string(ReprType::GetExponent(_repr));
         case {TMPL_IDENTIFIER_MANTISSA}: return std::to_string(ReprType::GetMantissa(_repr));
         case {TMPL_IDENTIFIER_MBITS}: return std::to_string(ReprType::NumMantissaBits(_repr));
-        case {TMPL_IDENTIFIER_REGIME}: return std::to_string(ReprType::GetRegime(_repr));
+        case {TMPL_IDENTIFIER_REGIME}:
+        {
+            int regime = ReprType::GetRegime(_repr);
+            if (regime == -(NumBits - 1))
+            {
+                // Display regime as -inf as described here: https://groups.google.com/g/unum-computing/c/BQ6ieoky5TU/m/tnHG7wQ2BQAJ
+                return "&minus;&infin;";
+            }
+            return std::to_string(regime);
+        }
 
         case {TMPL_STRCODE_BITSTRING}:  return ReprType::GetBitString(_repr);
         case {TMPL_STRCODE_BYTES_PRETTY}: return ReprType::GetBytesPretty(_repr);
