@@ -1,0 +1,10 @@
+# FloatInfo Changelog
+
+## v1.1 (2023-09-07)
+
+- Added minifloat and bfloat16
+- Posit regime of all zeroes is now displayed as -inf
+
+## v1.0 (2023-09-04)
+
+- Initial release supporting binary[16,32,64] and posit[8,16,32,64] floats.
