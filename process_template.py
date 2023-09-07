@@ -40,8 +40,9 @@ def main():
 
 
     dump_enum([
-        # 'TMPL_TYPE_BINARY8',
+        'TMPL_TYPE_MINIFLOAT',
         'TMPL_TYPE_BINARY16',
+        'TMPL_TYPE_BFLOAT16',
         'TMPL_TYPE_BINARY32',
         'TMPL_TYPE_BINARY64',
         'TMPL_TYPE_POSIT8',

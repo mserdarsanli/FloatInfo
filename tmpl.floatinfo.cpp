@@ -35,6 +35,24 @@ struct IEEE754Float16Traits
     static constexpr int NumMantissaBits = 10;
 };
 
+struct IEEE754BFloat16Traits
+{
+    static constexpr const char* TypeName = "bfloat16";
+    static constexpr const char* TypeNameLong = "Brain floating-point";
+    static constexpr int NumBits = 16;
+    static constexpr int NumExponentBits = 8;
+    static constexpr int NumMantissaBits = 7;
+};
+
+struct IEEE754MinifloatTraits
+{
+    static constexpr const char* TypeName = "minifloat";
+    static constexpr const char* TypeNameLong = "Minifloat";
+    static constexpr int NumBits = 8;
+    static constexpr int NumExponentBits = 4;
+    static constexpr int NumMantissaBits = 3;
+};
+
 struct IEEE754Float32Traits
 {
     static constexpr const char* TypeName = "binary32";
@@ -1190,6 +1208,8 @@ void e_set_value(Editor *e, int code, const char *valstr)
 Editor* get_fe(int code)
 {
     static IEEE754FloatEditor<IEEE754Float16Traits> gBinary16;
+    static IEEE754FloatEditor<IEEE754BFloat16Traits> gBFloat16;
+    static IEEE754FloatEditor<IEEE754MinifloatTraits> gMinifloat;
     static IEEE754FloatEditor<IEEE754Float32Traits> gBinary32;
     static IEEE754FloatEditor<IEEE754Float64Traits> gBinary64;
 
@@ -1201,6 +1221,8 @@ Editor* get_fe(int code)
     switch (code)
     {
     case {TMPL_TYPE_BINARY16}: return &gBinary16;
+    case {TMPL_TYPE_BFLOAT16}: return &gBFloat16;
+    case {TMPL_TYPE_MINIFLOAT}: return &gMinifloat;
     case {TMPL_TYPE_BINARY32}: return &gBinary32;
     case {TMPL_TYPE_BINARY64}: return &gBinary64;
     case {TMPL_TYPE_POSIT8}: return &gPosit8;
